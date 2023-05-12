@@ -1,0 +1,9 @@
+# secrets
+.secrets.zsh
+
+# hide zsh logs
+.zsh_history
+.zsh_sessions
+.zcompdump
+
+.DS_Store
