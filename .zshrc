@@ -5,35 +5,55 @@
 HISTFILE=${HOME}/.zsh/.zsh_history # change where the hisory file is located to the .zsh dir
 #setopt AUTO_CD # move without using cd
 
-# ignore duplicates in history
-# only ignore duplictes not both which includes commands starting with spaces
+# ignore duplicates in history (only ignore duplictes not both which includes commands starting with spaces)
 export HISTCONTROL=ignoredups # for bash
 setopt HIST_IGNORE_DUPS # for zsh
 
+# --- ENVIRONMENT VARIABLES ---
+export CFG="$HOME/.config"
+export DOC="$HOME/Documents"
+export PRO="$DOC/Projects/"
+export UNI="$DOC/University"
+export SEM="$UNI/Y5S2" # update this each semester
+export DES="$HOME/Desktop"
+export DRP="$HOME/Dropbox"
+
+export GOPATH=/usr/local/Cellar/go/1.8 # set go packages dir to inside where I have go installed
+export GIT_CONFIG_GLOBAL="$HOME/.config/gitconfig"
+
 # --- ALIASES ---
-# redefine commmon bash commands 
-#alias ls="ls -Al --color=auto | cut -w -f 9"
-alias ls="ls -A1L --color=auto" # much simpler way
+alias ls="ls -A1L --color=auto" 
 alias mv="mv -i" # safe move to prevent overrides
-alias rm="rm -d"
-alias ps="ps -al"
-# extra aliases
-alias g="git"
+alias rm="rm -d" # allow remove empty dirs
+
 alias python="python3.11"
-alias res="source ${HOME}/.zsh/.zshrc"
+alias res="source $ZDOTDIR/.zshrc"
 alias vim="nvim"
+alias pa="ps -al"
+
 # location shortcuts
-alias pro="cd ~/Documents/Projects"
-alias doc="cd ~/Documents"
-alias des="cd ~/Desktop"
-alias drop="cd ~/Dropbox/"
-alias uni="cd ~/Documents/University/Y5S1"
+alias doc="cd $DOC"
+alias pro="cd $PRO"
+alias des="cd $DES"
+alias drop="cd $DRP"
+alias uni="cd $SEM"
+
+# git shortcuts
+alias g="git"
+alias ga="git add"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gch="git checkout"
+alias git-shuffle="git checkout main && git merge dev && git push -u origin main && git checkout dev" # do the git shuffle!
+
+# --- CONFIGURE VIM ---
+export MYVIMRC="$HOME/.config/vim/.vimrc"
+#export VIMINIT=" let \$MYVIMRC=\"$HOME/.config/vim/vimrc\" | source \$MYVIMRC" # put vimrc in .config
 
 # --- PERSONAL ALIASES ---
 # UNSW HELPER UTILS
-source ${HOME}/.zsh/.secrets.zsh # gitignored secrets
+source "$HOME/.config/zsh/.secrets.zsh" # gitignored secrets
 alias unsh="ssh ${UNSW_ZID}@login.cse.unsw.edu.au"
-#alias sshunsw="op item get UNSW --fields label=password | " # 1Password shortcuts
 
 # md - mkdir and cd into it
 function md() {
@@ -46,7 +66,8 @@ function md() {
 #bindkey '<tab>' autosuggest-accept
 
 # zsh-syntax-highlighting 
-source ${HOME}/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source "$HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor root line)
 
 # zsh-vi-mode - improves zsh's vim mode
 #bindkey -v # disable default vim mode
@@ -71,8 +92,5 @@ path+=('/Users/nickramsay/Documents/Projects/go-auto-wallpaper/bin') # automatic
 path+=('/Users/nickramsay/Documents/Projects/c-mac-display-macro/dist') # display configuration macro
 path+=('/Users/nickramsay/Documents/Projects/c-math2400-utils/dist') # custom finite math utils
 path+=('/Users/nickramsay/Documents/Projects/py_quickscript/bin') # quickscript
+path+=('/Users/nickramsay/Documents/Projects/sh-create-github-repo/')
 export PATH
-
-# --- ENVIRONMENT VARIABLES
-#export GIT_CONFIG=${HOME}/.config/git/gitconfig # custom GIT CONFIG location
-export GOPATH=/usr/local/Cellar/go/1.8 # set go packages dir to inside where I have go installed
