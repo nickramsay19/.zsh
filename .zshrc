@@ -1,32 +1,38 @@
 # Title: .zsh/.zshrc
 # Author: Nicholas Ramsay
 
-# --- HOUSEKEEPING --- 
-HISTFILE=${HOME}/.zsh/.zsh_history # change where the hisory file is located to the .zsh dir
-#setopt AUTO_CD # move without using cd
+# global default profile
+source "$HOME/.profile"
 
-# ignore duplicates in history (only ignore duplictes not both which includes commands starting with spaces)
+# --- HOUSEKEEPING --- 
+CASE_SENSITIVE="false"
+#setopt AUTO_CD # move without using cd
+HISTFILE=${HOME}/.cache/zsh_history
 export HISTCONTROL=ignoredups # for bash
 setopt HIST_IGNORE_DUPS # for zsh
 
 # --- ENVIRONMENT VARIABLES ---
+export SHELL="/bin/zsh"
+export MANPAGER="nvim -c 'set ft=man' -"
+export GIT_CONFIG_GLOBAL="$HOME/.config/git/gitconfig"
+export MYVIMRC="$HOME/.config/vim/.vimrc"
+#export VIMINIT=" let \$MYVIMRC=\"$HOME/.config/vim/vimrc\" | source \$MYVIMRC" # put vimrc in .config
+export GOPATH=/usr/local/Cellar/go/1.8 # set go packages dir to inside where I have go installed
+export STACK_XDG=true
+
+# --- ALIASES ---
 export CFG="$HOME/.config"
 export DOC="$HOME/Documents"
-export PRO="$DOC/Projects/"
-export UNI="$DOC/University"
-export SEM="$UNI/Y5S2" # update this each semester
+export PRO="$DOC/Projects"
 export DES="$HOME/Desktop"
 export DRP="$HOME/Dropbox"
 
-export GOPATH=/usr/local/Cellar/go/1.8 # set go packages dir to inside where I have go installed
-export GIT_CONFIG_GLOBAL="$HOME/.config/gitconfig"
-
-# --- ALIASES ---
 alias ls="ls -A1L --color=auto" 
+#alias ls="ls -AHl --color=auto | cut -d$' ' -f 13-"
 alias mv="mv -i" # safe move to prevent overrides
 alias rm="rm -d" # allow remove empty dirs
 
-alias python="python3.11"
+alias py="python3.11"
 alias res="source $ZDOTDIR/.zshrc"
 alias vim="nvim"
 alias pa="ps -al"
@@ -36,7 +42,10 @@ alias doc="cd $DOC"
 alias pro="cd $PRO"
 alias des="cd $DES"
 alias drop="cd $DRP"
-alias uni="cd $SEM"
+
+# clipboard shortcuts
+alias cc="pbcopy" # note: replaces "cc" for clang
+alias pp="pbpaste" # note: replaces "pp" tool
 
 # git shortcuts
 alias g="git"
@@ -46,14 +55,15 @@ alias gcm="git commit -m"
 alias gch="git checkout"
 alias git-shuffle="git checkout main && git merge dev && git push -u origin main && git checkout dev" # do the git shuffle!
 
-# --- CONFIGURE VIM ---
-export MYVIMRC="$HOME/.config/vim/.vimrc"
-#export VIMINIT=" let \$MYVIMRC=\"$HOME/.config/vim/vimrc\" | source \$MYVIMRC" # put vimrc in .config
-
-# --- PERSONAL ALIASES ---
-# UNSW HELPER UTILS
+# unsw helper utils
+export UNI="$DOC/University"
+export SEM="$UNI/Y5S2" # update this each semester
 source "$HOME/.config/zsh/.secrets.zsh" # gitignored secrets
 alias unsh="ssh ${UNSW_ZID}@login.cse.unsw.edu.au"
+alias uni="cd $SEM"
+alias 2041="cd $SEM/COMP2041/"
+alias 3141="cd $SEM/COMP3141/"
+alias 2859="cd $SEM/MATH2859/"
 
 # md - mkdir and cd into it
 function md() {
@@ -88,9 +98,13 @@ PROMPT='%F{white}[%F{yellow}%T%F{white}] %~ > %F{bright_white}'
 #RPROMPT='$vcs_info_msg_0_ [$ZVM_MODE]'
 
 # --- PATH ---
-path+=('/Users/nickramsay/Documents/Projects/go-auto-wallpaper/bin') # automatic wallpaper changer
-path+=('/Users/nickramsay/Documents/Projects/c-mac-display-macro/dist') # display configuration macro
-path+=('/Users/nickramsay/Documents/Projects/c-math2400-utils/dist') # custom finite math utils
-path+=('/Users/nickramsay/Documents/Projects/py_quickscript/bin') # quickscript
-path+=('/Users/nickramsay/Documents/Projects/sh-create-github-repo/')
+path+=("$HOME/Documents/Projects/go-auto-wallpaper/bin") # automatic wallpaper changer
+path+=("$HOME/Documents/Projects/c-mac-display-macro/dist") # display configuration macro
+path+=("$HOME/Documents/Projects/c-math2400-utils/dist") # custom finite math utils
+path+=("$HOME/Documents/Projects/py_quickscript/bin") # quickscript
+path+=("$HOME/.scripts")
 export PATH
+
+# --- CLEAN HOME DIRECOTY ---
+rm -f "$HOME/.DS_Store"\
+    .python_history .bash_history .lesshst .viminfo
